@@ -104,6 +104,62 @@ class LogicProduct
         }
         return 2;
     }
+
+    public static function UpdateProduct($p_id, $nome, $prezzo, $marca){
+        $dbManager = new DbManager('ecommerce', 'psw:YNvXpnc1[Phk_@hj', 'ecommerce5f');
+        $connection = $dbManager->getConnectionPDO();
+        $queryStr = "UPDATE ecommerce5f.products SET nome=:nome, prezzo=:prezzo, marca=:marca WHERE id=:p_id";
+        $statement = $connection->prepare($queryStr);
+        $statement->bindParam(':p_id', $p_id);
+        $statement->bindParam(':nome', $nome);
+        $statement->bindParam(':prezzo', $prezzo);
+        $statement->bindParam(':marca', $marca);
+        // Esecuzione della query e gestione dell'esito
+        if ($statement->execute() == true) {
+            return 0;
+        }
+        return 2;
+
+        //aggiornare tutti i carrelli che contengono quell'articolo
+    }
+
+    public static function DeleteProduct($p_id){
+
+        $dbManager = new DbManager('ecommerce', 'psw:YNvXpnc1[Phk_@hj', 'ecommerce5f');
+        $connection = $dbManager->getConnectionPDO();
+        $queryStr = "DELETE FROM ecommerce5f.cart_products WHERE product_id=:p_id";
+        $statement = $connection->prepare($queryStr);
+        $statement->bindParam(':p_id', $p_id);
+        // Esecuzione della query e gestione dell'esito
+        if ($statement->execute() == true) {
+            $queryStr = "DELETE FROM ecommerce5f.products WHERE id=:p_id";
+            $statement = $connection->prepare($queryStr);
+            $statement->bindParam(':p_id', $p_id);
+            // Esecuzione della query e gestione dell'esito
+            if ($statement->execute() == true) {
+                return 0;
+            }
+            return 2;
+        }
+        return 2;
+
+        //eliminare tutti i carrelli che contengono quell'articolo
+    }
+
+    public static function AddProduct($nome, $prezzo, $marca){
+        $dbManager = new DbManager('ecommerce', 'psw:YNvXpnc1[Phk_@hj', 'ecommerce5f');
+        $connection = $dbManager->getConnectionPDO();
+        $queryStr = "INSERT INTO ecommerce5f.products(nome, prezzo, marca) VALUES(:nome, :prezzo, :marca)";
+        $statement = $connection->prepare($queryStr);
+        $statement->bindParam(':nome', $nome);
+        $statement->bindParam(':prezzo', $prezzo);
+        $statement->bindParam(':marca', $marca);
+        // Esecuzione della query e gestione dell'esito
+        if ($statement->execute() == true) {
+            return 0;
+        }
+        return 2;
+    }
 }
 
 ?>

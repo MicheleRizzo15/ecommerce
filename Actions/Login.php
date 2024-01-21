@@ -5,7 +5,13 @@ $psw = $_POST['password'];
 $err = LogicUser::isLogged($email, $psw);
 if ($err == 0) {
     //echo "CORRETTO\n";
-    header('Location: ../Views/ViewProducts.php');
+    session_start();
+    if($_SESSION['role_id'] == 1){
+        header('Location: ../Views/ViewProducts.php');
+    }
+    else{
+        header('Location: ../Views/ModifyAllProducts.php');
+    }
 } else if ($err == 1) {
     header('Location: ../Views/signup.php');
 

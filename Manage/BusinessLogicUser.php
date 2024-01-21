@@ -22,20 +22,23 @@ class LogicUser
                 $_SESSION['user_id'] = ((object)($currentUser))->getID();
                 $error = 0;
                 // Query per ottenere il carrello dell'utente
-                $queryStr = "SELECT * FROM ecommerce5f.carts WHERE user_id=:user_id";
-                $statement = $connection->prepare($queryStr);
-                $statement->bindParam(':user_id', $_SESSION['user_id']);
-                if ($statement->execute() == true) {
-                    $currentCart = $statement->fetchObject('Cart');
-                    if ($currentCart) {
-                        $_SESSION['cart_id'] = ((object)($currentCart))->getId();
-                        $error = 0;
+                if (((object)$currentUser)->getRole_Id() == 1) {
+                    $queryStr = "SELECT * FROM ecommerce5f.carts WHERE user_id=:user_id";
+                    $statement = $connection->prepare($queryStr);
+                    $statement->bindParam(':user_id', $_SESSION['user_id']);
+                    if ($statement->execute() == true) {
+                        $currentCart = $statement->fetchObject('Cart');
+                        if ($currentCart) {
+                            $_SESSION['cart_id'] = ((object)($currentCart))->getId();
+                            $error = 0;
+                        } else {
+                            $error = 1; // Errore nel recupero del carrello
+                        }
                     } else {
-                        $error = 1; // Errore nel recupero del carrello
+                        $error = 2; // Errore durante l'esecuzione della query
                     }
-                } else {
-                    $error = 2; // Errore durante l'esecuzione della query
                 }
+                $_SESSION['role_id']=((object)$currentUser)->getRole_Id();
             } else {
                 $error = 1; // Errore nel trovare l'utente
             }
@@ -45,7 +48,7 @@ class LogicUser
         return $error;
     }
 
-    public static function signUp($psw, $email)
+    public static function signUp($psw, $email, $ruolo)
     {
         $error = -1;
         $dbManager = new DbManager('ecommerce', 'psw:YNvXpnc1[Phk_@hj', 'ecommerce5f');
@@ -63,15 +66,16 @@ class LogicUser
             $error = 1;
         } else {
             // Inserisci il nuovo utente nel database
-            $insertUserQuery = "INSERT INTO ecommerce5f.users (password, email) VALUES (:password_v, :email_v)";
+            $insertUserQuery = "INSERT INTO ecommerce5f.users (password, email, role_id) VALUES (:password_v, :email_v, :ruolo)";
             $insertUserStatement = $connection->prepare($insertUserQuery);
             $insertUserStatement->bindParam(':password_v', $psw);
             $insertUserStatement->bindParam(':email_v', $email);
+            $insertUserStatement->bindParam(':ruolo', $ruolo);
+
 
             if ($insertUserStatement->execute() == true) {
                 // Registrazione avvenuta con successo
                 $error = 0;
-
                 // Ottieni l'ID dell'utente appena registrato
                 $queryStr = "SELECT * FROM ecommerce5f.users WHERE email=:email_v LIMIT 1";
                 $statement = $connection->prepare($queryStr);
@@ -79,18 +83,23 @@ class LogicUser
                 if ($statement->execute() == true) {
                     $currentUser = $statement->fetchObject('user');
                     if ($currentUser) {
+
                         $id = ((object)($currentUser))->getID();
                         $error = 0;
 
-                        // Inserisci una nuova riga nella tabella "carts" per l'utente
-                        $insertUserQuery = "INSERT INTO ecommerce5f.carts (user_id) VALUES (:us_id)";
-                        $insertUserStatement = $connection->prepare($insertUserQuery);
-                        $insertUserStatement->bindParam(':us_id', $id);
+                        if ($ruolo == 1) {
+                            // Inserisci una nuova riga nella tabella "carts" per l'utente
+                            $insertUserQuery = "INSERT INTO ecommerce5f.carts (user_id) VALUES (:us_id)";
+                            $insertUserStatement = $connection->prepare($insertUserQuery);
+                            $insertUserStatement->bindParam(':us_id', $id);
 
-                        if ($insertUserStatement->execute() == true) {
-                            return self::isLogged($email, $psw);
+                            if ($insertUserStatement->execute() == true) {
+                                return self::isLogged($email, $psw);
+                            } else {
+                                $error = 2;
+                            }
                         } else {
-                            $error = 2;
+                            return self::isLogged($email, $psw);
                         }
                     } else {
                         $error = 1;

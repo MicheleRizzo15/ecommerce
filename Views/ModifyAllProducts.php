@@ -2,6 +2,21 @@
 <html>
 <head>
     <title>Prodotti</title>
+    <script>
+        function Action(n, id) {
+            if (n == 0) {
+                document.getElementById(id).action = "../Actions/ModifyProduct.php";
+                document.getElementById(id).submit();
+            } else if (n == 1) {
+                document.getElementById(id).action = "../Actions/DeleteProduct.php";
+                document.getElementById(id).submit();
+            }
+            else if (n == 2){
+                document.getElementById(id).action = "../Actions/AddProduct.php";
+                document.getElementById(id).submit();
+            }
+        }
+    </script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -67,36 +82,38 @@ session_start();
 if (!isset($_SESSION['user_id'])) {
     header("./login.php");
 }
-else if($_SESSION['role_id'] == 2){
-    header("./ModifyAllProducts.php");
+else if($_SESSION['role_id'] == 1){
+    header("./ViewProducts.php");
 }
 $tmp = LogicProduct::ViewAllProducts();
 ?>
 
 <h2>Prodotti</h2>
+<form method="post" name="FormAggiungi" action="../Actions/AddProduct.php">
+
+    <input type="text" name="nome" placeholder="nome"><br>
+    <input type="number" min="0" step=".01" name="prezzo" placeholder="prezzo"><br>
+    <input type="text" name="marca" placeholder="marca"><br>
+    <input type="submit" value="Aggiungi">
+
+</form>
 <?php
 $i = 0;
-
 foreach ($tmp as $product) {
     ?>
-    <form method="post" name="Form<?php echo $i; ?>" action="../Actions/AddToCart.php">
+    <form method="post" name="Form<?php echo $i; ?>" action="../Actions/ModifyProduct.php" id="<?php echo $i; ?>">
 
-        <label>Nome: <?php echo $product->getNome(); ?></label><br>
-        <label>Prezzo: <?php echo $product->getPrezzo(); ?></label><br>
-        <label>Marca: <?php echo $product->getMarca(); ?></label><br>
-        <label>Quantità: </label>
-        <input type="number" name="qty" min="0" value="0"><br>
+        <input type="text" value="<?php echo $product->getNome(); ?>" name="nome"><br>
+        <input type="number" min="0" step=".01" value="<?php echo $product->getPrezzo(); ?>" name="prezzo"><br>
+        <input type="text" value="<?php echo $product->getMarca(); ?>" name="marca"><br>
         <input type="hidden" name="p_id" value="<?php echo $product->getID(); ?>">
-        <input type="submit" value="Aggiungi al carrello">
-
+        <input type="button" name="Modifica" onclick="Action(0, <?php echo $i; ?>)" value="Modifica">
+        <input type="button" name="Elimina" onclick="Action(1, <?php echo $i; ?>)" value="Elimina">
     </form>
     <?php
     $i++;
 }
 ?>
-<form method="post" name="Form2" action="./ViewCarrello.php">
-    <input type="submit" name="carrello" value="Visualizza Carrello">
-</form>
 
 
 </body>
