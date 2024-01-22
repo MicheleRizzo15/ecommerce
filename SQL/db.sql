@@ -32,6 +32,7 @@ create table if not exists ecommerce5F.carts
 
 create table if not exists ecommerce5F.cart_products
 (
+    id int not null auto_increment primay key,
     cart_id    int,
     product_id int,
     quantita   int

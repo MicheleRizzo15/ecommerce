@@ -2,74 +2,10 @@
 <html>
 <head>
     <title>Carrello</title>
-    <script>
-        function Action(n, id) {
-            if (n == 0) {
-                document.getElementById(id).action = "../Actions/ModifyQTY.php";
-                document.getElementById(id).submit();
-            } else if (n == 1) {
-                document.getElementById(id).action = "../Actions/Delete.php";
-                document.getElementById(id).submit();
-            }
+    <script src="../JAVASCRIPT/Functions.js"></script>
 
-        }
-    </script>
+    <link rel="stylesheet" type="text/css" href="../CSS/style.css">
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #222;
-            color: #fff;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin: 0;
-            padding: 20px;
-        }
-
-        h2 {
-            color: #fff;
-            margin-bottom: 20px;
-        }
-
-        form {
-            background-color: #333;
-            padding: 20px;
-            border-radius: 10px;
-            width: calc(33.33% - 20px);
-            margin-bottom: 20px;
-            text-align: left;
-            box-sizing: border-box;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-            color: #fff;
-        }
-
-        input[type="number"],
-        input[type="submit"],
-        input[type="button"] {
-            padding: 10px;
-            margin: 5px 0;
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        input[type="submit"],
-        input[type="button"] {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-
-        input[type="submit"]:hover,
-        input[type="button"]:hover {
-            background-color: #45a049;
-        }
-    </style>
 </head>
 <body>
 
@@ -99,8 +35,8 @@ foreach ($tmp as $cartProduct) {
         <input type="number" name="qty" min="0" value="<?php echo $cartProduct['quantita']; ?>"><br>
         <br>
         <input type="hidden" name="p_id" value="<?php echo $cartProduct['product_id']; ?>">
-        <input type="button" name="Modifica" onclick="Action(0, <?php echo $f; ?>)" value="Modifica">
-        <input type="button" name="Elimina" onclick="Action(1, <?php echo $f; ?>)" value="Elimina">
+        <input type="button" name="Modifica" onclick="ActionCart(0, <?php echo $f; ?>)" value="Modifica">
+        <input type="button" name="Elimina" onclick="ActionCart(1, <?php echo $f; ?>)" value="Elimina">
     </form>
 
     <?php

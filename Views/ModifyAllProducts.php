@@ -2,77 +2,10 @@
 <html>
 <head>
     <title>Prodotti</title>
-    <script>
-        function Action(n, id) {
-            if (n == 0) {
-                document.getElementById(id).action = "../Actions/ModifyProduct.php";
-                document.getElementById(id).submit();
-            } else if (n == 1) {
-                document.getElementById(id).action = "../Actions/DeleteProduct.php";
-                document.getElementById(id).submit();
-            }
-            else if (n == 2){
-                document.getElementById(id).action = "../Actions/AddProduct.php";
-                document.getElementById(id).submit();
-            }
-        }
-    </script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #222;
-            color: #fff;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin: 0;
-            padding: 20px;
-        }
 
-        h2 {
-            color: #fff;
-            margin-bottom: 20px;
-        }
+    <script src="../JAVASCRIPT/Functions.js"></script>
+    <link rel="stylesheet" type="text/css" href="../CSS/style.css">
 
-
-        form {
-            background-color: #333;
-            padding: 20px;
-            border-radius: 10px;
-            width: calc(33.33% - 20px);
-            margin-bottom: 20px;
-            text-align: left;
-            box-sizing: border-box;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-            color: #fff;
-        }
-
-        input[type="number"],
-        input[type="submit"],
-        input[type="button"] {
-            padding: 10px;
-            margin: 5px 0;
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        input[type="submit"],
-        input[type="button"] {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-
-        input[type="submit"]:hover,
-        input[type="button"]:hover {
-            background-color: #45a049;
-        }
-    </style>
 </head>
 <body>
 
@@ -107,8 +40,8 @@ foreach ($tmp as $product) {
         <input type="number" min="0" step=".01" value="<?php echo $product->getPrezzo(); ?>" name="prezzo"><br>
         <input type="text" value="<?php echo $product->getMarca(); ?>" name="marca"><br>
         <input type="hidden" name="p_id" value="<?php echo $product->getID(); ?>">
-        <input type="button" name="Modifica" onclick="Action(0, <?php echo $i; ?>)" value="Modifica">
-        <input type="button" name="Elimina" onclick="Action(1, <?php echo $i; ?>)" value="Elimina">
+        <input type="button" name="Modifica" onclick="ActionProduct(0, <?php echo $i; ?>)" value="Modifica">
+        <input type="button" name="Elimina" onclick="ActionProduct(1, <?php echo $i; ?>)" value="Elimina">
     </form>
     <?php
     $i++;
