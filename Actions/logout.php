@@ -6,6 +6,6 @@ session_start();
 if (isset($_SESSION['user_id'])) {
 
     LogicUser::logout();
-    header('Location: ../Views/ViewProducts.php');
+    header('Location: ../Views/login.php');
 }
 ?>

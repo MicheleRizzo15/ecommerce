@@ -119,8 +119,6 @@ class LogicProduct
             return 0;
         }
         return 2;
-
-        //aggiornare tutti i carrelli che contengono quell'articolo
     }
 
     public static function DeleteProduct($p_id){
@@ -142,8 +140,6 @@ class LogicProduct
             return 2;
         }
         return 2;
-
-        //eliminare tutti i carrelli che contengono quell'articolo
     }
 
     public static function AddProduct($nome, $prezzo, $marca){

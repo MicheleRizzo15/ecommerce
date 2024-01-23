@@ -9,10 +9,9 @@
 <?php
 require_once('../Manage/BusinessLogicProduct.php');
 session_start();
-if (!isset($_SESSION['user_id'])) {
+if ($set = !isset($_SESSION['user_id'])) {
     header("./login.php");
-}
-else if($_SESSION['role_id'] == 2){
+} else if ($_SESSION['role_id'] == 2) {
     header("./ModifyAllProducts.php");
 }
 $tmp = LogicProduct::ViewAllProducts();
@@ -29,20 +28,25 @@ foreach ($tmp as $product) {
         <label>Nome: <?php echo $product->getNome(); ?></label><br>
         <label>Prezzo: <?php echo $product->getPrezzo(); ?></label><br>
         <label>Marca: <?php echo $product->getMarca(); ?></label><br>
-        <label>Quantità: </label>
-        <input type="number" name="qty" min="0" value="0"><br>
         <input type="hidden" name="p_id" value="<?php echo $product->getID(); ?>">
-        <input type="submit" value="Aggiungi al carrello">
-
+        <?php if (!$set) { ?>
+            <label>Quantità: </label>
+            <input type="number" name="qty" min="0" value="0"><br>
+            <input type="submit" value="Aggiungi al carrello">
+        <?php } ?>
     </form>
     <?php
     $i++;
 }
 ?>
-<form method="post" name="Form2" action="./ViewCarrello.php">
-    <input type="submit" name="carrello" value="Visualizza Carrello">
-</form>
 
-
+<?php
+if (!$set) {
+    ?>
+    <form method="post" name="Form2" action="./ViewCarrello.php">
+        <input type="submit" name="carrello" value="Visualizza Carrello">
+        <a href="../Actions/logout.php">logout</a>
+    </form>
+<?php } ?>
 </body>
 </html>

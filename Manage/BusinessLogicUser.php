@@ -66,11 +66,10 @@ class LogicUser
             $error = 1;
         } else {
             // Inserisci il nuovo utente nel database
-            $insertUserQuery = "INSERT INTO ecommerce5f.users (password, email, role_id) VALUES (:password_v, :email_v, :ruolo)";
+            $insertUserQuery = "INSERT INTO ecommerce5f.users (password, email, role_id) VALUES (:password_v, :email_v, 1)";
             $insertUserStatement = $connection->prepare($insertUserQuery);
             $insertUserStatement->bindParam(':password_v', $psw);
             $insertUserStatement->bindParam(':email_v', $email);
-            $insertUserStatement->bindParam(':ruolo', $ruolo);
 
 
             if ($insertUserStatement->execute() == true) {
@@ -116,8 +115,7 @@ class LogicUser
     }
 
 
-    public
-    static function logout()
+    public static function logout()
     {
         session_start();
         session_destroy();

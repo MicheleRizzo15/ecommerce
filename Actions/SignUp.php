@@ -3,19 +3,15 @@ require_once('../Manage/BusinessLogicUser.php');
 
 $email = $_POST['email'];
 $password = $_POST['password'];
-$ruolo = $_POST['ruolo'];
 
 // Chiamata alla funzione di registrazione
-$registrationError = LogicUser::signUp($password, $email, $ruolo);
+$registrationError = LogicUser::signUp($password, $email, 1);
 
 if ($registrationError == 0) {
     // Registrazione avvenuta con successo
-    if($ruolo == 1){
-        header('Location: ../Views/ViewProducts.php');
-    }
-    else{
-        header('Location: ../Views/ModifyAllProducts.php');
-    }
+
+    header('Location: ../Views/ViewProducts.php');
+
 } else {
     // Gestisci gli errori di registrazione
     if ($registrationError == 2) {

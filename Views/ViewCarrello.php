@@ -13,7 +13,7 @@
 require_once('../Manage/BusinessLogicProduct.php');
 session_start();
 
-if (!isset($_SESSION['user_id'])) {
+if ($set = !isset($_SESSION['user_id'])) {
     header("./login.php");
 }
 $tmp = LogicProduct::ViewAllProductsCart($_SESSION['cart_id']);
@@ -45,11 +45,26 @@ foreach ($tmp as $cartProduct) {
 }
 
 ?>
-<span>Prezzo Totale: <?php echo $i; ?></span>
-<form action="./ViewProducts.php">
-    <input type="submit" value="Torna a tutti gli articoli">
-</form>
 
+
+<span>Prezzo Totale: <?php echo $i; ?></span>
+
+<?php
+if (!$set) {
+    ?>
+
+    <form action="./ViewProducts.php">
+        <input type="submit" value="Torna a tutti gli articoli">
+        <a href="../Actions/logout.php">logout</a>
+    </form>
+
+    <form action="../Actions/Purchase.php">
+        <input type="submit" name="purchase" value="Acquista">
+    </form>
+
+    <?php
+}
+?>
 
 </body>
 </html>

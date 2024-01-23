@@ -31,11 +31,6 @@ if (isset($_POST['email'])) {
     <label for="password">Password:</label>
     <input type="password" id="password" name="password" required placeholder="password"><br>
 
-    <label for="ruolo">Ruolo:</label>
-    <select name="ruolo" id="ruolo">
-        <option value="1">Shopper</option>
-        <option value="2">Admin</option>
-    </select>
 
     <input type="button" value="Registrati" onclick="validoSignUp()">
 </form>
