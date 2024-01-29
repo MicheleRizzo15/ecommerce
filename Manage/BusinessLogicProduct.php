@@ -4,10 +4,16 @@ require_once '../Object/Product.php';
 
 class LogicProduct
 {
-    public static function ViewAllProducts()
+    public static function getConnection()
     {
         $dbManager = new DbManager('ecommerce', 'psw:YNvXpnc1[Phk_@hj', 'ecommerce5f');
         $connection = $dbManager->getConnectionPDO();
+        return $connection;
+    }
+
+    public static function ViewAllProducts()
+    {
+        $connection = self::getConnection();
         $queryStr = "SELECT * FROM ecommerce5f.products";
         $statement = $connection->prepare($queryStr);
         $statement->execute() == true;
@@ -18,9 +24,7 @@ class LogicProduct
 
     public static function AddProducts($cart_id, $qty, $articolo)
     {
-        $dbManager = new DbManager('ecommerce', 'psw:YNvXpnc1[Phk_@hj', 'ecommerce5f');
-        $connection = $dbManager->getConnectionPDO();
-
+        $connection = self::getConnection();
 
         $queryStr = "SELECT quantita FROM ecommerce5f.cart_products WHERE cart_id = :cart_id and product_id = :product_id";
         $statement = $connection->prepare($queryStr);
@@ -55,8 +59,7 @@ class LogicProduct
 
     public static function ViewAllProductsCart($cart_id)
     {
-        $dbManager = new DbManager('ecommerce', 'psw:YNvXpnc1[Phk_@hj', 'ecommerce5f');
-        $connection = $dbManager->getConnectionPDO();
+        $connection = self::getConnection();
         $queryStr = "SELECT products.nome, products.prezzo, products.marca, SUM(cart_products.quantita) as quantita, cart_products.product_id FROM cart_products INNER JOIN products on cart_products.product_id=products.id WHERE cart_products.cart_id = :cart_id GROUP BY product_id";
         $statement = $connection->prepare($queryStr);
         $statement->bindParam(':cart_id', $cart_id);
@@ -74,8 +77,8 @@ class LogicProduct
         if ($qty == 0) {
             return self::Delete($cart_id, $articolo);
         } else {
-            $dbManager = new DbManager('ecommerce', 'psw:YNvXpnc1[Phk_@hj', 'ecommerce5f');
-            $connection = $dbManager->getConnectionPDO();
+            $connection = self::getConnection();
+
             $queryStr = "UPDATE ecommerce5f.cart_products SET quantita=:qty WHERE cart_id=:cart_id and product_id=:articolo";
             $statement = $connection->prepare($queryStr);
             $statement->bindParam(':cart_id', $cart_id);
@@ -92,8 +95,8 @@ class LogicProduct
 
     public static function Delete($cart_id, $articolo)
     {
-        $dbManager = new DbManager('ecommerce', 'psw:YNvXpnc1[Phk_@hj', 'ecommerce5f');
-        $connection = $dbManager->getConnectionPDO();
+        $connection = self::getConnection();
+
         $queryStr = "DELETE FROM ecommerce5f.cart_products WHERE product_id=:articolo and cart_id=:cart_id";
         $statement = $connection->prepare($queryStr);
         $statement->bindParam(':cart_id', $cart_id);
@@ -106,8 +109,8 @@ class LogicProduct
     }
 
     public static function UpdateProduct($p_id, $nome, $prezzo, $marca){
-        $dbManager = new DbManager('ecommerce', 'psw:YNvXpnc1[Phk_@hj', 'ecommerce5f');
-        $connection = $dbManager->getConnectionPDO();
+        $connection = self::getConnection();
+
         $queryStr = "UPDATE ecommerce5f.products SET nome=:nome, prezzo=:prezzo, marca=:marca WHERE id=:p_id";
         $statement = $connection->prepare($queryStr);
         $statement->bindParam(':p_id', $p_id);
@@ -123,8 +126,8 @@ class LogicProduct
 
     public static function DeleteProduct($p_id){
 
-        $dbManager = new DbManager('ecommerce', 'psw:YNvXpnc1[Phk_@hj', 'ecommerce5f');
-        $connection = $dbManager->getConnectionPDO();
+        $connection = self::getConnection();
+
         $queryStr = "DELETE FROM ecommerce5f.cart_products WHERE product_id=:p_id";
         $statement = $connection->prepare($queryStr);
         $statement->bindParam(':p_id', $p_id);
@@ -143,8 +146,8 @@ class LogicProduct
     }
 
     public static function AddProduct($nome, $prezzo, $marca){
-        $dbManager = new DbManager('ecommerce', 'psw:YNvXpnc1[Phk_@hj', 'ecommerce5f');
-        $connection = $dbManager->getConnectionPDO();
+        $connection = self::getConnection();
+
         $queryStr = "INSERT INTO ecommerce5f.products(nome, prezzo, marca) VALUES(:nome, :prezzo, :marca)";
         $statement = $connection->prepare($queryStr);
         $statement->bindParam(':nome', $nome);
@@ -156,6 +159,7 @@ class LogicProduct
         }
         return 2;
     }
+
 }
 
 ?>

@@ -14,7 +14,7 @@ require_once('../Manage/BusinessLogicProduct.php');
 session_start();
 
 if ($set = !isset($_SESSION['user_id'])) {
-    header("./login.php");
+    header("Location: ./login.php");
 }
 $tmp = LogicProduct::ViewAllProductsCart($_SESSION['cart_id']);
 ?>
@@ -55,12 +55,17 @@ if (!$set) {
 
     <form action="./ViewProducts.php">
         <input type="submit" value="Torna a tutti gli articoli">
-        <a href="../Actions/logout.php">logout</a>
     </form>
 
-    <form action="../Actions/Purchase.php">
-        <input type="submit" name="purchase" value="Acquista">
+    <form action="../Actions/logout.php">
+        <input type="submit" value="Logout">
     </form>
+
+    <!-- ipotetico pulsante Acquista
+    dopo aver acquistato (e aver creato nel carrello il campo attivo booleano) lo setto a false e creo un nuovo carrello
+    la creazione del carrello prevede questo campo a true di default
+    il login prevede la ricerca del carrello con l'user_id richiesto e il campo valido a true
+    -->
 
     <?php
 }

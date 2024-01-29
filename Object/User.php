@@ -4,7 +4,6 @@
         private $id;
         private $email;
         private $password;
-
         private $role_id;
     
         public function getID()

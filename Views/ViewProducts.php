@@ -9,10 +9,10 @@
 <?php
 require_once('../Manage/BusinessLogicProduct.php');
 session_start();
-if ($set = !isset($_SESSION['user_id'])) {
-    header("./login.php");
+if (!isset($_SESSION['user_id'])) {
+    header("Location: ./login.php");
 } else if ($_SESSION['role_id'] == 2) {
-    header("./ModifyAllProducts.php");
+    header("Location: ./ModifyAllProducts.php");
 }
 $tmp = LogicProduct::ViewAllProducts();
 ?>
@@ -29,24 +29,22 @@ foreach ($tmp as $product) {
         <label>Prezzo: <?php echo $product->getPrezzo(); ?></label><br>
         <label>Marca: <?php echo $product->getMarca(); ?></label><br>
         <input type="hidden" name="p_id" value="<?php echo $product->getID(); ?>">
-        <?php if (!$set) { ?>
-            <label>Quantità: </label>
-            <input type="number" name="qty" min="0" value="0"><br>
-            <input type="submit" value="Aggiungi al carrello">
-        <?php } ?>
+        <label>Quantità: </label>
+        <input type="number" name="qty" min="0" value="0"><br>
+        <input type="submit" value="Aggiungi al carrello">
     </form>
     <?php
     $i++;
 }
 ?>
 
-<?php
-if (!$set) {
-    ?>
-    <form method="post" name="Form2" action="./ViewCarrello.php">
-        <input type="submit" name="carrello" value="Visualizza Carrello">
-        <a href="../Actions/logout.php">logout</a>
-    </form>
-<?php } ?>
+<form method="post" action="./ViewCarrello.php">
+    <input type="submit" name="carrello" value="Visualizza Carrello">
+</form>
+
+<form action="../Actions/logout.php">
+    <input type="submit" value="Logout">
+</form>
+
 </body>
 </html>

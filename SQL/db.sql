@@ -20,7 +20,8 @@ create table if not exists ecommerce5F.sessions
     id         int not null auto_increment primary key,
     ip         varchar(16),
     data_login datetime,
-    user_id    int
+    user_id    int,
+    disabilited boolean
     );
 
 create table if not exists ecommerce5F.carts

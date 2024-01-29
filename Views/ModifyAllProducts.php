@@ -14,8 +14,7 @@ require_once('../Manage/BusinessLogicProduct.php');
 session_start();
 if (!isset($_SESSION['user_id'])) {
     header("./login.php");
-}
-else if($_SESSION['role_id'] == 1){
+} else if ($_SESSION['role_id'] == 1) {
     header("./ViewProducts.php");
 }
 $tmp = LogicProduct::ViewAllProducts();
@@ -48,6 +47,6 @@ foreach ($tmp as $product) {
 }
 ?>
 
-
+<a href="../Actions/logout.php">logout</a>
 </body>
 </html>
