@@ -13,9 +13,9 @@
 require_once('../Manage/BusinessLogicProduct.php');
 session_start();
 if (!isset($_SESSION['user_id'])) {
-    header("./login.php");
+    header("Location: ./login.php");
 } else if ($_SESSION['role_id'] == 1) {
-    header("./ViewProducts.php");
+    header("Location: ./ViewProducts.php");
 }
 $tmp = LogicProduct::ViewAllProducts();
 ?>

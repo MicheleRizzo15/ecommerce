@@ -3,6 +3,7 @@
 <head>
     <title>Prodotti</title>
     <link rel="stylesheet" type="text/css" href="../CSS/style.css">
+    <script src="../JAVASCRIPT/api.js"></script>
 </head>
 <body>
 
@@ -23,15 +24,16 @@ $i = 0;
 
 foreach ($tmp as $product) {
     ?>
-    <form method="post" name="Form<?php echo $i; ?>" action="../Actions/AddToCart.php">
+    <form method="post" name="Form<?php echo $i; ?>">
 
         <label>Nome: <?php echo $product->getNome(); ?></label><br>
         <label>Prezzo: <?php echo $product->getPrezzo(); ?></label><br>
         <label>Marca: <?php echo $product->getMarca(); ?></label><br>
-        <input type="hidden" name="p_id" value="<?php echo $product->getID(); ?>">
+        <input type="hidden" name="p_id" id="p_idForm<?php echo $i; ?>" value="<?php echo $product->getID(); ?>">
         <label>Quantità: </label>
-        <input type="number" name="qty" min="0" value="0"><br>
-        <input type="submit" value="Aggiungi al carrello">
+        <input type="number" id="qtyForm<?php echo $i; ?>" min="0" value="0"><br>
+        <input type="button" value="Aggiungi al carrello" onclick="AddProduct('qtyForm<?php echo $i; ?>', 'p_idForm<?php echo $i; ?>')">
+
     </form>
     <?php
     $i++;

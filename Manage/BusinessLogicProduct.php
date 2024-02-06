@@ -49,7 +49,6 @@ class LogicProduct
                 $q = $q['quantita'];
                 $q = intval($q) + intval($qty);
                 return self::ModifyQTYProducts($cart_id, $q, $articolo);
-
             }
         } else {
             return 2; // Errore
