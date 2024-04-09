@@ -44,7 +44,6 @@ class LogicProduct
                     return 0; // Successo
                 }
             } else {
-                //header('Location: ./b.html');
                 $q = $statement->fetch(PDO::FETCH_ASSOC);
                 $q = $q['quantita'];
                 $q = intval($q) + intval($qty);
@@ -89,7 +88,6 @@ class LogicProduct
             }
             return 2;
         }
-
     }
 
     public static function Delete($cart_id, $articolo)
@@ -107,7 +105,8 @@ class LogicProduct
         return 2;
     }
 
-    public static function UpdateProduct($p_id, $nome, $prezzo, $marca){
+    public static function UpdateProduct($p_id, $nome, $prezzo, $marca)
+    {
         $connection = self::getConnection();
 
         $queryStr = "UPDATE ecommerce5f.products SET nome=:nome, prezzo=:prezzo, marca=:marca WHERE id=:p_id";
@@ -123,7 +122,8 @@ class LogicProduct
         return 2;
     }
 
-    public static function DeleteProduct($p_id){
+    public static function DeleteProduct($p_id)
+    {
 
         $connection = self::getConnection();
 
@@ -144,7 +144,8 @@ class LogicProduct
         return 2;
     }
 
-    public static function AddProduct($nome, $prezzo, $marca){
+    public static function AddProduct($nome, $prezzo, $marca)
+    {
         $connection = self::getConnection();
 
         $queryStr = "INSERT INTO ecommerce5f.products(nome, prezzo, marca) VALUES(:nome, :prezzo, :marca)";
@@ -158,6 +159,21 @@ class LogicProduct
         }
         return 2;
     }
+
+    public static function EmptyCart($cart_id)
+    {
+        $connection = self::getConnection();
+
+        $queryStr = "DELETE FROM ecommerce5f.cart_products WHERE cart_id=:cart_id";
+        $statement = $connection->prepare($queryStr);
+        $statement->bindParam(':cart_id', $cart_id);
+        // Esecuzione della query e gestione dell'esito
+        if ($statement->execute() == true) {
+            return 0; // Successo
+        }
+        return 2; // Errore
+    }
+
 
 }
 

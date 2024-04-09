@@ -3,7 +3,7 @@
 <head>
     <title>Prodotti</title>
     <link rel="stylesheet" type="text/css" href="../CSS/style.css">
-    <script src="../JAVASCRIPT/api.js"></script>
+    <script src="../JAVASCRIPT/risposta.js"></script>
 </head>
 <body>
 

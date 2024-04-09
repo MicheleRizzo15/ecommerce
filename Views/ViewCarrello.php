@@ -49,27 +49,18 @@ foreach ($tmp as $cartProduct) {
 
 <span>Prezzo Totale: <?php echo $i; ?></span>
 
-<?php
-if (!$set) {
-    ?>
+<form action="../Actions/Buy.php">
+    <input type="submit" value="Acquista" name="svuota_carrello">
+</form>
 
-    <form action="./ViewProducts.php">
-        <input type="submit" value="Torna a tutti gli articoli">
-    </form>
+<form action="./ViewProducts.php">
+    <input type="submit" value="Torna a tutti gli articoli">
+</form>
 
-    <form action="../Actions/logout.php">
-        <input type="submit" value="Logout">
-    </form>
+<form action="../Actions/logout.php">
+    <input type="submit" value="Logout">
+</form>
 
-    <!-- ipotetico pulsante Acquista
-    dopo aver acquistato (e aver creato nel carrello il campo attivo booleano) lo setto a false e creo un nuovo carrello
-    la creazione del carrello prevede questo campo a true di default
-    il login prevede la ricerca del carrello con l'user_id richiesto e il campo valido a true
-    -->
-
-    <?php
-}
-?>
 
 </body>
 </html>
